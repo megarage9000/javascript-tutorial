@@ -3,5 +3,20 @@
     <head>
         <meta charset="utf-8">
     </head>
-    <script src = "main.js"></script>
+    <body>
+        <p> Before the script </p>
+
+        <!-- script has attributes
+            - if src is set, script underneath is ignored
+        -->
+        <script>
+            alert("Hello world!");
+        </script>
+        <p> After the script </p>
+
+        <p> calling script from outside source </p>
+        <script src = "main.js"></script>
+        <p> after calling external script </p>
+
+    </body>
 </html>
