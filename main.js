@@ -10,28 +10,34 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Loops
-// - Again like similar to all languages but
+// Switches
 /*
-    Labels:
+    Like every language but...
 
-    allows us to break out of loops to a certain location
-        Rules:
-            1. Location must be above the call to the label,
-            not a random arbitrary location
+    - you can group cases as well!
+    - uses strict equality (same type)
+    - If there is no break, the following case will be executed without checking
+    case after
  */
 
- outerExample:
- for(let i = 0; i < 20; i++){
-    innerExample:
-    for(let j = 0; j < 10; ++j){
-        if(2 % j === 0){
-            alert("Breakout at i = " + i + " and j = " + j);
-            continue outerExample;
-        }
-        else{
-            alert("Inner example");
-            break innerExample;
-        }
-    }
- }
+ let randomNumber = prompt("Enter a number");
+
+ switch(+randomNumber){
+
+    case 1:
+    case 2:
+    case 3:
+        alert("You must have entered either 1, 2, or 3!");
+        break;
+
+    case '4':
+        alert("I will never be shown");
+        break;
+    
+    case 5:
+        alert("I have no break, but the following case will be checked if I am false");
+
+    default:
+        alert("Hello world!");
+        break;
+}
