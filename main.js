@@ -11,22 +11,26 @@
 "use strict"
 
 
-// Simple interaction
+// Type Converions
 
-// - alert (Shows message)
-alert("Hello World!");
+// String conversion
+// - Works with all primitives
+let numToString = String(123);
 
-// - prompt (Asks for user for input)
-// (note you can add a default initial value, which is important for IE)
-// you can get the result as a string
-let randomPrompt = prompt("Who are you", "I don't know, an alien?");
-alert(`You are a ${randomPrompt}?`);
+// Numeric conversion
+// Rules:
+// - Undefined -> NaN
+// - null -> 0
+// - true / false -> 1 / 0
+// - string -> (removes whitespaces. If empty string, -> 0, else if a num is detected, than that num, otherwise NaN)
+let stringToNum = Number("1234z"); // will yield a NaN
 
-// - confirm (Like prompt, but user either clicks cancel or OK)
-// returns a boolean
-let randomConfirm = confirm("Can you breath?");
-if(randomConfirm){
-    alert("Ok you are a living thing.");
-} else {
-    alert("Ok you are not a living thing.");
-}
+// Boolean conversion
+// Rules:
+// - 0, null, undefined, "" (anything empty) -> false
+// - else -> true
+let randomToBoolean = Boolean(null); // will yield false
+
+alert(numToString);
+alert(stringToNum);
+alert(randomToBoolean);
