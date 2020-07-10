@@ -10,18 +10,28 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Nullish coalescing operator '??'
-
+// Loops
+// - Again like similar to all languages but
 /*
-    Operates similarly to || (OR), and && (AND), excepts
-    it finds the first non undefined/null value
-        - If there isn't any, return the last value
+    Labels:
 
-    -  Good for assigning defaults when necessary
-    -  It shall not be used with || or && for safety reasons
+    allows us to break out of loops to a certain location
+        Rules:
+            1. Location must be above the call to the label,
+            not a random arbitrary location
  */
 
- let value = null;
- let value2 = undefined;
- let value3 = prompt("Enter a non null or undefined value: ");
- alert(value ?? value2 ?? value3) // will alert value3 if not undefined or null
+ outerExample:
+ for(let i = 0; i < 20; i++){
+    innerExample:
+    for(let j = 0; j < 10; ++j){
+        if(2 % j === 0){
+            alert("Breakout at i = " + i + " and j = " + j);
+            continue outerExample;
+        }
+        else{
+            alert("Inner example");
+            break innerExample;
+        }
+    }
+ }
