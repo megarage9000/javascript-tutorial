@@ -10,19 +10,17 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Comparisons
-// - Similar to other languages except
+// Ifs and ternary operators
+// - Similar to other languages
 
 /*
-  - There are two equalities:
-        - == is for regular equality, converts both operands to same type
-        - === is for strict equality, where both operands must be similar
-        
-   - Null and Undefined:
-        - when Null == Undefined, it is true (This does not hold for other comparisons!)
-        - when Null === Undefined, it is false
+    - Ternary review:
 
-    - String comparisons:
-        - compares each letter/character in the string by their unicode according to ASCII
- */
+    (condition) ? value1 : value2
+
+        - if condition is true:
+            value1 is returned/exectuted
+        - else:
+            value2 is returned/executed
+*/
 
