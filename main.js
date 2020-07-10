@@ -10,45 +10,23 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// alert("Hello World again!");
 
-// Datatypes:
+// Simple interaction
 
-// - Number (Similar to integer)
-let regularInt = 23;
-alert("Regular int" + regularInt);
+// - alert (Shows message)
+alert("Hello World!");
 
-// - BigInt (Similar to floats)
-const largeInt = 21312421412n;
-alert("Big int" + largeInt);
-// - Strings
-let singleQuoteString = 'Hello world';
-let doubleQuoteString = "It's me again";
+// - prompt (Asks for user for input)
+// (note you can add a default initial value, which is important for IE)
+// you can get the result as a string
+let randomPrompt = prompt("Who are you", "I don't know, an alien?");
+alert(`You are a ${randomPrompt}?`);
 
-// This type of string allows us to embed variables or expressions in the braces
-let backQuoteString = `${singleQuoteString}. ${doubleQuoteString}, and I am learning javascript today!`;
-alert(backQuoteString);
-
-// - Boolean
-let randomBooleanExpresion = 2 < 5;
-let randomBoolean = true && randomBooleanExpresion;
-alert("Boolean expression example: " + randomBoolean);
-
-// - Undefined
-// not recommended for use, but its there
-let anUndefinedVar;
-alert("Undefined value: " + anUndefinedVar);
-
-// - Null
-let nullValue = null;
-alert("Null value: " + nullValue);
-
-// - New Operator: typeof
-// allows us to get the type of the object, in a string
-// - note null returns object lol
-
-function randomFunction(){
-    alert("I will not run");
+// - confirm (Like prompt, but user either clicks cancel or OK)
+// returns a boolean
+let randomConfirm = confirm("Can you breath?");
+if(randomConfirm){
+    alert("Ok you are a living thing.");
+} else {
+    alert("Ok you are not a living thing.");
 }
-
-alert(typeof(randomFunction));
