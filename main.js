@@ -1,5 +1,6 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
+<<<<<<< HEAD
 
 // This is a single line comment.
 /*
@@ -32,3 +33,5 @@ let arg1 = prompt("Enter arg1");
 let arg2 = prompt("Enter arg2");
 testFunction(arg1, arg2);
 testFunction();
+=======
+>>>>>>> 7a5add888b22e646640c3d81b54b459bbb28789f
