@@ -1,40 +1,59 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Symbols 
+// Object to primitive 
 /*
     Summary taken off the lecture:
 
-    Symbol is a primitive type for unique identifiers.
+    The object-to-primitive conversion is called automatically by many built-in functions and operators that 
+    expect a primitive as a value.
 
-    Symbols are created with Symbol() call with an optional description (name).
+    There are 3 types (hints) of it:
 
-    Symbols are always different values, even if they have the same name. If we want same-named 
-    symbols to be equal, then we should use the global registry: Symbol.for(key) returns (creates if needed) 
-    a global symbol with key as the name. Multiple calls of Symbol.for with the same key return exactly the same symbol.
+        "string" (for alert and other operations that need a string)
+        "number" (for maths)
+        "default" (few operators)
 
-    Symbols have two main use cases:
+    The specification describes explicitly which operator uses which hint. There are very few operators 
+    that “don’t know what to expect” and use the "default" hint. Usually for built-in objects "default" 
+    hint is handled the same way as "number", so in practice the last two are often merged together.
 
-        “Hidden” object properties. If we want to add a property into an object that “belongs” to another script or a library, 
-        we can create a symbol and use it as a property key. A symbolic property does not appear in for..in, so it won’t be 
-        accidentally processed together with other properties. Also it won’t be accessed directly, because another script does 
-        not have our symbol. So the property will be protected from accidental use or overwrite.
+    The conversion algorithm is:
 
-        So we can “covertly” hide something into objects that we need, but others should not see, using symbolic properties.
+        Call obj[Symbol.toPrimitive](hint) if the method exists,
+        Otherwise if hint is "string"
+            try obj.toString() and obj.valueOf(), whatever exists.
+        Otherwise if hint is "number" or "default"
+            try obj.valueOf() and obj.toString(), whatever exists.
 
-        There are many system symbols used by JavaScript which are accessible as Symbol.*. We can use them to alter some built-in 
-        behaviors. For instance, later in the tutorial we’ll use Symbol.iterator for iterables, Symbol.toPrimitive to setup object-to-primitive conversion and so on.
-
-    Technically, symbols are not 100% hidden. There is a built-in method Object.getOwnPropertySymbols(obj) that allows us 
-    to get all symbols. Also there is a method named Reflect.ownKeys(obj) that returns all keys of an object including symbolic ones. So they 
-    are not really hidden. But most libraries, built-in functions and syntax constructs don’t use these methods.
-
-    - Symbols are essentially unique identifiers that allow us to assign unique properties within Object, especially if they are hidden.
-    They are not strings and shouldn't be used as such, but as a unique identifier
-
-    - Syntax:
-        - let variable = Symbol("[description of symbol]");
-        - global symbol: let variable = Symbol.for("[description for symbol]");
+    In practice, it’s often enough to implement only obj.toString() as a “catch-all” method for all 
+    conversions that return a “human-readable” representation of an object, for logging or debugging purposes.
 
 */
 
+function newPerson(name, age){
+    this.name = name;
+    this.age = age;
+
+    this[Symbol.toPrimitive] = function(hint){
+        alert("Symbol.toPrimitive is called");
+        return hint == 'string' ? `Name: ${this.name}` : this.age;
+    }
+
+    this.toString = function(){
+        alert("toString has been called!");
+        return this[Symbol.toPrimitive]('string');
+    }
+
+    this.valueOf = function(){
+        alert("valueOf has been called!");
+        return this[Symbol.toPrimitive]('number');
+    }
+    
+}
+
+let person = new newPerson("John", 19);
+alert(+person);
+alert(person);
+alert(person.toString());
+alert(person.valueOf());
