@@ -10,7 +10,12 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Testing 
+// Polyfills
 
-// We use Mocha! 
-// Testing is similar to TDD (Test Driven Development)
+/*
+    JavaScript evolves constantly, and sometimes our code isn't gonna be compatible with new 
+    versions, so we need a transpiler like Babel to revert code to a previous standard to
+    allow versions to run
+
+    Link: https://javascript.info/polyfills
+ */
