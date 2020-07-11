@@ -10,28 +10,27 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Debugging using Firefox:
-// see link: https://javascript.info/debugging-chrome
-const SPEED_LIMIT = 60;
-let multiArrowFunction = (currentSpeed, speedLimit) => {
-    let areNum = !isNaN(currentSpeed) && !isNaN(speedLimit);
-    if(areNum){
-        let message = 
-        (currentSpeed == speedLimit) ? alert("You are at speed limit!") :
-        (currentSpeed < speedLimit) ? alert("You are below speed limit") :
-        alert("You are above speed limit, slow down!");
-        return true;
-    }
-    return false;
-}
+// Coding style
+// Not much is needed: 
+// Link: https://javascript.info/coding-style
 
-let success = false;
-do{
-    success = multiArrowFunction(
-        prompt("Enter your speed: "),
-        SPEED_LIMIT
-    );
-    if(success == false){
-        alert("Wrong typing!");
-    }
-} while(!success)
+
+// keynotes:
+/*
+    Functions Placement(): 
+    If there exist helper functions and code needing then you can either:
+        1. place declarations first before code
+        2. place code before declarations
+
+    Nesting:
+    Avoid nesting by using continues for for loops, it gets extremely 
+    complicated man
+
+    Semicolons:
+    Always include them every line
+
+    Line length:
+    Suggested to be 80 - 120 characters
+    - (note: for strings, you can use ` quotes to string into lines)
+ 
+ */
