@@ -20,24 +20,15 @@
     case after
  */
 
- let randomNumber = prompt("Enter a number");
-
- switch(+randomNumber){
-
-    case 1:
-    case 2:
-    case 3:
-        alert("You must have entered either 1, 2, or 3!");
-        break;
-
-    case '4':
-        alert("I will never be shown");
-        break;
-    
-    case 5:
-        alert("I have no break, but the following case will be checked if I am false");
-
-    default:
-        alert("Hello world!");
-        break;
+let randomGlobal = "Hello World";
+function testFunction(arg1 = "No arg2 was provided", arg2 = "No arg2 was provided"){
+    let randomLocal = "My name is main.js";
+    let isWantToAlert = prompt("Want to see me alert?");
+    if(isWantToAlert){
+        alert(randomGlobal + ". " + randomLocal + ". " + arg1 + ". " + arg2);
+    }
 }
+let arg1 = prompt("Enter arg1");
+let arg2 = prompt("Enter arg2");
+testFunction(arg1, arg2);
+testFunction();
