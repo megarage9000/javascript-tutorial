@@ -31,4 +31,4 @@ function testFunction(arg1 = "No arg2 was provided", arg2 = "No arg2 was provide
 let arg1 = prompt("Enter arg1");
 let arg2 = prompt("Enter arg2");
 testFunction(arg1, arg2);
-testFunction();
+let isUndef = alert("Value of testFunction: " + testFunction());
