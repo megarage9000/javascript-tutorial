@@ -1,0 +1,26 @@
+{
+  "name": "javascript-tutorial",
+  "version": "1.0.0",
+  "description": "A javascript tutorial with some Phaser elements to add some spice!",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megarage9000/javascript-tutorial.git"
+  },
+  "keywords": [
+    "Game",
+    "test"
+  ],
+  "author": "John Ordoyo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/megarage9000/javascript-tutorial/issues"
+  },
+  "homepage": "https://github.com/megarage9000/javascript-tutorial#readme",
+  "dependencies": {
+    "phaser": "^3.23.0"
+  }
+}
