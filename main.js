@@ -10,15 +10,6 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Comments
-// - Pretty much similar to other CS courses
+// Ninja code
 
-/*
-    - Be self descriptive and factor out to functions
-    if it gets too complicated
-
-    - Use comments to describe architecture, function usage,
-    and important solutions
-
-    - JSDoc is avail too, link: https://github.com/jsdoc/jsdoc
-*/
+// Summary: Don't be a ninja programmer (Don't be a dick)
