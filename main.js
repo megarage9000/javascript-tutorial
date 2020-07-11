@@ -1,45 +1,40 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Constructor, operator new
+// Symbols 
 /*
     Summary taken off the lecture:
 
-    Constructor functions or, briefly, constructors, are regular functions, but there’s a common agreement to name them with capital letter first.
+    Symbol is a primitive type for unique identifiers.
 
-    Constructor functions should only be called using new. Such a call implies a creation of empty this at the start and returning the populated one at the end.
+    Symbols are created with Symbol() call with an optional description (name).
 
-    - new.Target allows us to determine whether the functions is called as a constructor or as a regular function
+    Symbols are always different values, even if they have the same name. If we want same-named 
+    symbols to be equal, then we should use the global registry: Symbol.for(key) returns (creates if needed) 
+    a global symbol with key as the name. Multiple calls of Symbol.for with the same key return exactly the same symbol.
 
-    - When returning from a constructor function:
-        - if constructor returns an object, it returns that object
-        - if constructor returns primitive, it is ignored
-        - else, constructore returns this
+    Symbols have two main use cases:
+
+        “Hidden” object properties. If we want to add a property into an object that “belongs” to another script or a library, 
+        we can create a symbol and use it as a property key. A symbolic property does not appear in for..in, so it won’t be 
+        accidentally processed together with other properties. Also it won’t be accessed directly, because another script does 
+        not have our symbol. So the property will be protected from accidental use or overwrite.
+
+        So we can “covertly” hide something into objects that we need, but others should not see, using symbolic properties.
+
+        There are many system symbols used by JavaScript which are accessible as Symbol.*. We can use them to alter some built-in 
+        behaviors. For instance, later in the tutorial we’ll use Symbol.iterator for iterables, Symbol.toPrimitive to setup object-to-primitive conversion and so on.
+
+    Technically, symbols are not 100% hidden. There is a built-in method Object.getOwnPropertySymbols(obj) that allows us 
+    to get all symbols. Also there is a method named Reflect.ownKeys(obj) that returns all keys of an object including symbolic ones. So they 
+    are not really hidden. But most libraries, built-in functions and syntax constructs don’t use these methods.
+
+    - Symbols are essentially unique identifiers that allow us to assign unique properties within Object, especially if they are hidden.
+    They are not strings and shouldn't be used as such, but as a unique identifier
+
+    - Syntax:
+        - let variable = Symbol("[description of symbol]");
+        - global symbol: let variable = Symbol.for("[description for symbol]");
 
 */
-
-// Accumulator challenge
-
-function Accumulator(initialValue){
-    this.value = initialValue;
-    this.read = function(){
-        while(true){
-            let input = +prompt("Enter a user value: ");
-            if(!isNaN(input)){
-                this.value += input;
-                break;
-            }
-            else{
-                alert("Wrong typing!");
-            }
-        }
-    }
-}
-
-let accumulator = new Accumulator(1); // initial value 1
-
-accumulator.read(); // adds the user-entered value
-accumulator.read(); // adds the user-entered value
-
-alert(accumulator.value); // shows the sum of these values
 
