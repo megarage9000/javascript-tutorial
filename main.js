@@ -10,51 +10,34 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// More on functions
-let randomGlobal = 20;
-// Functions can be assigned to variables
-let newFunc = function(){
-    alert(randomGlobal);
-}
-// Functions can also be passed as arguments
-function ageTester(ifTooOld, ifTooYoung, ageThreshold){
-    while(true){  
-        let ageInput = prompt("How old are you?");
-        if(!isNaN(ageInput)){
-            if(ageInput > ageThreshold) ifTooOld();
-            else if(ageInput < ageThreshold) ifTooYoung();
-            else alert("Right age!");
-            return;
-        }
-        alert("wrong typing!");
+// Arrow functions
+
+// // - Allows a Lamda style declaration/expression of a function
+// const MASTER_NAME = "Arnold";
+// let arrowFunction = (name, masterName) => (name === masterName) ? alert("Hello " + masterName + "!") : alert("I don't know you");
+// arrowFunction(prompt("What is your name?"), MASTER_NAME);
+
+// - Arrow functions also allow multiline declarations
+const SPEED_LIMIT = 60;
+let multiArrowFunction = (currentSpeed, speedLimit) => {
+    let areNum = !isNaN(currentSpeed) && !isNaN(speedLimit);
+    if(areNum){
+        let message = 
+        (currentSpeed == speedLimit) ? alert("You are at speed limit!") :
+        (currentSpeed < speedLimit) ? alert("You are below speed limit") :
+        alert("You are above speed limit, slow down!");
+        return true;
     }
+    return false;
 }
 
-// you can declare functions anonymously
-ageTester(
-    function(){ alert("You are too old!")},
-    function(){ alert("You are too young!")},
-    18
-)
-
-// you can also declare functions and assign them later
-let evaluateSpeedLimit;
-while (true){
-    let speedLimit = prompt("Enter a speed limit");
-    let currentSpeedLimit = prompt("Enter your current speed limit");
-
-    if ( (!isNaN(speedLimit)) && (!isNaN(currentSpeedLimit))) {
-        if(speedLimit > currentSpeedLimit){
-            evaluateSpeedLimit = function(){
-                alert("You are going pretty slow man");
-            }
-        }
-        else{
-            evaluateSpeedLimit = function(){
-                alert("You are on speed limit or greater, what??");
-            }
-        }
-        break;
+let success = false;
+do{
+    success = multiArrowFunction(
+        prompt("Enter your speed: "),
+        SPEED_LIMIT
+    );
+    if(success == false){
+        alert("Wrong typing!");
     }
-}
-evaluateSpeedLimit();
+} while(!success)
