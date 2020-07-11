@@ -10,14 +10,8 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Arrow functions
-
-// // - Allows a Lamda style declaration/expression of a function
-// const MASTER_NAME = "Arnold";
-// let arrowFunction = (name, masterName) => (name === masterName) ? alert("Hello " + masterName + "!") : alert("I don't know you");
-// arrowFunction(prompt("What is your name?"), MASTER_NAME);
-
-// - Arrow functions also allow multiline declarations
+// Debugging using Firefox:
+// see link: https://javascript.info/debugging-chrome
 const SPEED_LIMIT = 60;
 let multiArrowFunction = (currentSpeed, speedLimit) => {
     let areNum = !isNaN(currentSpeed) && !isNaN(speedLimit);
