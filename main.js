@@ -1,31 +1,30 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Objects
+// Object copying, references
+
 /*
-    Almost quite similar to structs in C/C++, but with many twists:
+    Objects in javascript are stored as reference, multiple varaibles can 
+    access the same object
 
-    - You can add and delete properties [Also applies to const Objects, you just can 
-    change their values]
+    - When a variable is assigned an object, it is assigned its reference, as
+    so for subsequent variable assignments on that object
 
-    - Properties can be multi-worded, and to access them you use [] with their 
-    string literal or a variable storing that literal. Even single worded 
-    properties can be turned into a string and be accessed via [], essentially 
-    strings can be property names
+    - When two variables are compared that contain same object references, it
+    will return true
 
-    - When initializing an Object, if both property and property value share the
-    same name, you can simply enter the property and will read as property : property value
-
-    - Property names can be named anything! Except __proto__
-
-    - "in" is an operator that allows us to check if a property exists within
-    the Object. Can be used in for loops
-
-    - When looping over an object, it orders as follows:
-        - Begins with sorting integer properties, than others sorted on
-        creation
+    - Shallow cloning can be done via Object.assign[dest, src1, src2, ... srcN]
+    where:
+        - dest: Where the new object can be stored, or an existing one
+        exist there too, with added properties
+        - src1 ... srcN: The sources, there can be more than one
+            - If any of the sources share same properties, they
+            will be overwritten
+    
+    - Note that shallow cloning can't copy property references to an object
+    within an object, you can use a library called: https://lodash.com/ for nested
+    cloning
 */
-
 
 function makePerson(name, age, optionalThirdProperty, thirdValue){
     let thirdProperty = optionalThirdProperty;
@@ -47,7 +46,24 @@ if(!(thirdProperty && thirdValue)){
 }
 let person = makePerson(prompt("Your name?"), prompt("Your age?"), thirdProperty, thirdValue);
 
-alert("Your created person: ");
-for(key in person){
-    alert(key + ":" + person[key]);
+// alert("Your created person: ");
+// for(key in person){
+//     alert(key + ":" + person[key]);
+// }
+
+let weightLifter = {
+    benchPR : 225,
+    squatPR : 350,
+    deadliftPR: 400,
+};
+
+let sameLifter = weightLifter;
+console.log("Before benchPR change: " + weightLifter["benchPR"]);
+sameLifter["benchPR"] = 300;
+console.log("After benchPR change: " + weightLifter["benchPR"]);
+
+let cloneLifter = Object.assign({}, weightLifter, person);
+console.log("Is cloneLifter == weightLifter? " + (cloneLifter == weightLifter));
+for(key in cloneLifter){
+    console.log("-" + key + ": " + cloneLifter[key]);
 }
