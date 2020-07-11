@@ -10,27 +10,15 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Coding style
-// Not much is needed: 
-// Link: https://javascript.info/coding-style
+// Comments
+// - Pretty much similar to other CS courses
 
-
-// keynotes:
 /*
-    Functions Placement(): 
-    If there exist helper functions and code needing then you can either:
-        1. place declarations first before code
-        2. place code before declarations
+    - Be self descriptive and factor out to functions
+    if it gets too complicated
 
-    Nesting:
-    Avoid nesting by using continues for for loops, it gets extremely 
-    complicated man
+    - Use comments to describe architecture, function usage,
+    and important solutions
 
-    Semicolons:
-    Always include them every line
-
-    Line length:
-    Suggested to be 80 - 120 characters
-    - (note: for strings, you can use ` quotes to string into lines)
- 
- */
+    - JSDoc is avail too, link: https://github.com/jsdoc/jsdoc
+*/
