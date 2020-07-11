@@ -10,25 +10,51 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Switches
-/*
-    Like every language but...
-
-    - you can group cases as well!
-    - uses strict equality (same type)
-    - If there is no break, the following case will be executed without checking
-    case after
- */
-
-let randomGlobal = "Hello World";
-function testFunction(arg1 = "No arg2 was provided", arg2 = "No arg2 was provided"){
-    let randomLocal = "My name is main.js";
-    let isWantToAlert = prompt("Want to see me alert?");
-    if(isWantToAlert){
-        alert(randomGlobal + ". " + randomLocal + ". " + arg1 + ". " + arg2);
+// More on functions
+let randomGlobal = 20;
+// Functions can be assigned to variables
+let newFunc = function(){
+    alert(randomGlobal);
+}
+// Functions can also be passed as arguments
+function ageTester(ifTooOld, ifTooYoung, ageThreshold){
+    while(true){  
+        let ageInput = prompt("How old are you?");
+        if(!isNaN(ageInput)){
+            if(ageInput > ageThreshold) ifTooOld();
+            else if(ageInput < ageThreshold) ifTooYoung();
+            else alert("Right age!");
+            return;
+        }
+        alert("wrong typing!");
     }
 }
-let arg1 = prompt("Enter arg1");
-let arg2 = prompt("Enter arg2");
-testFunction(arg1, arg2);
-let isUndef = alert("Value of testFunction: " + testFunction());
+
+// you can declare functions anonymously
+ageTester(
+    function(){ alert("You are too old!")},
+    function(){ alert("You are too young!")},
+    18
+)
+
+// you can also declare functions and assign them later
+let evaluateSpeedLimit;
+while (true){
+    let speedLimit = prompt("Enter a speed limit");
+    let currentSpeedLimit = prompt("Enter your current speed limit");
+
+    if ( (!isNaN(speedLimit)) && (!isNaN(currentSpeedLimit))) {
+        if(speedLimit > currentSpeedLimit){
+            evaluateSpeedLimit = function(){
+                alert("You are going pretty slow man");
+            }
+        }
+        else{
+            evaluateSpeedLimit = function(){
+                alert("You are on speed limit or greater, what??");
+            }
+        }
+        break;
+    }
+}
+evaluateSpeedLimit();
