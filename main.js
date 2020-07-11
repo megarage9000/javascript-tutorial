@@ -1,63 +1,45 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Object this, methods
-
+// Constructor, operator new
 /*
     Summary taken off the lecture:
 
-    
-    Functions that are stored in object properties are called “methods”.
-    Methods allow objects to “act” like object.doSomething().
-    Methods can reference the object as this.
+    Constructor functions or, briefly, constructors, are regular functions, but there’s a common agreement to name them with capital letter first.
 
-    The value of this is defined at run-time.
+    Constructor functions should only be called using new. Such a call implies a creation of empty this at the start and returning the populated one at the end.
 
-    When a function is declared, it may use this, but that this has no value until the function is called.
-    A function can be copied between objects.
-    When a function is called in the “method” syntax: object.method(), the value of this during the call is object.
+    - new.Target allows us to determine whether the functions is called as a constructor or as a regular function
 
-    Please note that arrow functions are special: they have no this. When this is accessed inside an arrow function, it is taken from outside.
+    - When returning from a constructor function:
+        - if constructor returns an object, it returns that object
+        - if constructor returns primitive, it is ignored
+        - else, constructore returns this
+
 */
 
-let calculator = {
-    operand1: 0,
-    operand2: 0,
-    read(){
-        this.operand1 = +prompt("Enter a value for operand 1: ");
-        this.operand2 = +prompt("Enter a value for operand 2: ");
-    },
-    sum(){
-        return this.operand1 + this.operand2;
-    },
-    mul(){
-        return this.operand1 * this.operand2;
-    },
-};
+// Accumulator challenge
 
-// adding "return this" in a method of an object returns
-// the reference of that object. This allows for chaining
-let ladder = {
-    step: 0,
-    up() {
-      this.step++;
-      return this;
-    },
-    down() {
-      this.step--;
-      return this;
-    },
-    showStep: function() { // shows the current step
-      alert( this.step );
-      return this;
+function Accumulator(initialValue){
+    this.value = initialValue;
+    this.read = function(){
+        while(true){
+            let input = +prompt("Enter a user value: ");
+            if(!isNaN(input)){
+                this.value += input;
+                break;
+            }
+            else{
+                alert("Wrong typing!");
+            }
+        }
     }
-  };
+}
 
-calculator.read();
-alert(calculator.sum());
-alert(calculator.mul());
+let accumulator = new Accumulator(1); // initial value 1
 
-ladder.up();
-ladder.up();
-ladder.down();
-ladder.showStep(); // 1
+accumulator.read(); // adds the user-entered value
+accumulator.read(); // adds the user-entered value
+
+alert(accumulator.value); // shows the sum of these values
+
