@@ -10,6 +10,7 @@
 // "use strict" enables us to use old functionality
 "use strict"
 
-// Ninja code
+// Testing 
 
-// Summary: Don't be a ninja programmer (Don't be a dick)
+// We use Mocha! 
+// Testing is similar to TDD (Test Driven Development)
