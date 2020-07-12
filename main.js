@@ -7,52 +7,84 @@
 // Iterable
 
 /*
-    Summary from website: 
+ 
+Summary from website: 
 
-    Objects that can be used in for..of are called iterable.
+Map – is a collection of keyed values.
 
-    Technically, iterables must implement the method named Symbol.iterator.
-        The result of obj[Symbol.iterator] is called an iterator. It handles the further iteration process.
-        An iterator must have the method named next() that returns an object {done: Boolean, value: any}, 
-        here done:true denotes the end of the iteration process, otherwise the value is the next value.
+    Methods and properties:
 
-    The Symbol.iterator method is called automatically by for..of, but we also can do it directly.
-    Built-in iterables like strings or arrays, also implement Symbol.iterator.
-    String iterator knows about surrogate pairs.
+        - new Map([iterable]) – creates the map, with optional iterable (e.g. array) of 
+        [key,value] pairs for initialization.
+        
+        - map.set(key, value) – stores the value by the key.
+        
+        - map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.
+        
+        - map.has(key) – returns true if the key exists, false otherwise.
+        
+        - map.delete(key) – removes the value by the key.
+        
+        - map.clear() – removes everything from the map.
+        
+        - map.size – returns the current element count.
 
-    Objects that have indexed properties and length are called array-like. Such objects may also have 
-    other properties and methods, but lack the built-in methods of arrays.
+    The differences from a regular Object:
 
-    If we look inside the specification – we’ll see that most built-in methods assume that they work with 
-    iterables or array-likes instead of “real” arrays, because that’s more abstract.
+        Any keys, objects can be keys.
+        Additional convenient methods, the size property.
 
-    Array.from(obj[, mapFn, thisArg]) makes a real Array of an iterable or array-like obj, and we can then 
-    use array methods on it. The optional arguments mapFn and thisArg allow us to apply a function to each item.
+    Set – is a collection of unique values.
+
+    Methods and properties:
+
+        - new Set([iterable]) – creates the set, with optional iterable (e.g. array) of values for initialization.
+        
+        - set.add(value) – adds a value (does nothing if value exists), returns the set itself.
+        
+        - set.delete(value) – removes the value, returns true if value existed at the moment of the call, otherwise false.
+        
+        - set.has(value) – returns true if the value exists in the set, otherwise false.
+        
+        - set.clear() – removes everything from the set.
+        
+        - set.size – is the elements count.
+
+    Iteration over Map and Set is always in the insertion order, so we can’t say that 
+    these collections are unordered, but we can’t reorder elements or directly get an element by its number.
 */
 
-// An example on the website:
-let range = {
-    from: 1,
-    to: 5,
-    
-    // Create a symbol iterator, and have it return itself, since
-    // contains the next() function
-    [Symbol.iterator]() {
-      this.current = this.from;
-      return this;
-    },
-    
-    // next relies on this.current, and is determined by the
-    // returning values of done and value
-    next() {
-      if (this.current <= this.to) {
-        return { done: false, value: this.current++ };
-      } else {
-        return { done: true };
-      }
-    }
-  };
+// - Filter Unique array members
+
+// function unique(arr) {
+//     // Creates a new array, from a new set from the arr parameter
+//     // array -> set -> array
+//     return Array.from(new Set(arr));
+//   }
   
-  for (let num of range) {
-    alert(num); // 1, then 2, 3, 4, 5
-  }
+//   let values = ["Hare", "Krishna", "Hare", "Krishna",
+//     "Krishna", "Krishna", "Hare", "Hare", ":-O"
+//   ];
+  
+//   alert( unique(values) ); // Hare, Krishna, :-O
+
+// - Filter Unique Anagrams
+
+// function aclean(arr){
+    // - solution from website
+//     let newSet = new Set();
+
+//     for(let word of arr){
+//         let newWord = word
+//             .toLowerCase()
+//             .split('')
+//             .sort()
+//             .join('');
+//         newSet.add(newWord);
+//     }
+//     return Array.from(newSet);
+// }
+
+// let arr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
+
+// alert( aclean(arr) ); // "nap,teachers,ear" or "PAN,cheaters,era"
