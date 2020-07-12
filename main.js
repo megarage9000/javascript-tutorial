@@ -1,59 +1,142 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Scheduling: setTimeout / setInterval
+// Scheduling: Decorator
 /*
     Summary on website
     
-    1. Methods setTimeout(func, delay, ...args) and setInterval(func, delay, ...args) 
-    allow us to run the func once/regularly after delay milliseconds.
-    
-    2. To cancel the execution, we should call clearTimeout/clearInterval with 
-    the value returned by setTimeout/setInterval.
-    
-    3. Nested setTimeout calls are a more flexible alternative to setInterval, a
-    llowing us to set the time between executions more precisely.
-    
-    4. Zero delay scheduling with setTimeout(func, 0) (the same as setTimeout(func)) is
-    used to schedule the call “as soon as possible, but after the current script is complete”.
-    
-    5. The browser limits the minimal delay for five or more nested call of 
-    setTimeout or for setInterval (after 5th call) to 4ms. That’s for historical reasons.
+    - Decorator is a wrapper around a function that alters its behavior. The main 
+    job is still carried out by the function.
 
-    Please note that all scheduling methods do not guarantee the exact delay.
+    - Decorators can be seen as “features” or “aspects” that can be added to a function. 
+    We can add one or add many. And all this without changing its code!
 
-    For example, the in-browser timer may slow down for a lot of reasons:
+    - To implement cachingDecorator, we studied methods:
 
-        - The CPU is overloaded.
-        - The browser tab is in the background mode.
-        - The laptop is on battery.
+        1. func.call(context, arg1, arg2…) – calls func with given context and arguments.
+        
+        2. func.apply(context, args) – calls func passing context as this and array-like
+        args into a list of arguments.
 
-    All that may increase the minimal timer resolution (the minimal delay) 
-    to 300ms or even 1000ms depending on the browser and OS-level performance settings.
+    - The generic call forwarding is usually done with apply:
+
+        let wrapper = function() {
+        return original.apply(this, arguments);
+        };
+
+        We also saw an example of method borrowing when we take a method from an object and call 
+        it in the context of another object. It is quite common to take array methods and apply them 
+        to arguments. The alternative is to use rest parameters object that is a real array. 
+    
+    There are many decorators there in the wild. Check how well you got them by solving the tasks of this chapter.
 
 */
 
-function printNumbersInterval(from, to){
-    currentIndex = from;
-    let intervalId = setInterval(function(){
-        console.log(currentIndex);
-        if(currentIndex < to) currentIndex++;
-        else clearInterval(intervalId);
-    }, 1000);
+// - Spy Decorator
+function work(a, b) {
+    alert( a + b ); // work is an arbitrary function or method
 }
 
-function printNumbersTimeout(from, to){
-    currentIndex = from;
-    setTimeout(function printNumbers(){
-        console.log(currentIndex);
-        if(currentIndex < to) {
-            currentIndex++;
-            setTimeout(printNumbers, 1000)
+function spy(func){
+
+    // Create a wrapper that takes in variable
+    // arguments
+    function spyWrapper(...arguments){
+        spyWrapper.calls.push(arguments);
+        return func.apply(this, arguments);
+    };
+
+    // initialize calls to empty array
+    spyWrapper.calls = []
+    return spyWrapper;
+    
+}
+
+// work = spy(work);
+
+// (work(1, 2)); // 3
+// (work(4, 5)); // 9
+
+// for (let args of work.calls) {
+//     alert( 'call:' + args.join() ); // "call:1,2", "call:4,5"
+// }
+
+// - Delaying Decorator
+function f(x) {
+    alert(x);
+}
+
+function delay(func, delay){
+
+    // Create a function,
+    // - use func.call to refer to
+    // x of function()
+    return function(x){
+        setTimeout(() => func.call(this, x), delay);
+    };
+
+}
+// create wrappers
+let f1000 = delay(f, 4000);
+let f1500 = delay(f, 8000);
+
+f1000("test"); // shows "test" after 1000ms
+f1500("test"); // shows "test" after 1500ms
+
+// - Debounce decorator / Throttle decorator
+function exampleFunction(something){
+    alert("I have awoken " + something + "!");
+}
+
+function debounce(func, delay){
+    let id;
+    
+    // Call func.apply(this, arguments)
+    // since we can access arguments regardless
+    // if the provided function has provided them 
+    // or not.
+    return function(){
+        clearTimeout(id);
+        // reset timer and start again
+        id = setTimeout(() => func.apply(this, arguments), delay);
+    };
+}
+
+function throttle(func, ms) {
+
+    // A determiner if method
+    // was throttled or not
+    let isThrottled = false,
+        savedArgs,
+        savedThis;
+
+    function wrapper() {
+
+        // If throttled, save recent arguments
+        // and this
+        if (isThrottled) { // (2)
+            savedArgs = arguments;
+            savedThis = this;
+            return;
         }
-    }, 1000);
+
+        // immediately call this if no throttle
+        func.apply(this, arguments); // (1)
+
+        // apply throttle timer
+        isThrottled = true;
+          setTimeout(function() {
+            isThrottled = false; // (3)
+            if (savedArgs) {
+                wrapper.apply(savedThis, savedArgs);
+                savedArgs = savedThis = null;
+                }
+        }, ms);
+    }
+
+    return wrapper;
 }
 
-// console.log("Interval: ");
-// printNumbersInterval(1, 3);
-console.log("Timeout: ");
-printNumbersTimeout(1, 3);
+// let newFunc = debounce(exampleFunction, 1000);
+// setTimeout(newFunc("John"), 500);
+// setTimeout(newFunc("Josh"), 700);
