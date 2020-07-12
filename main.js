@@ -99,3 +99,18 @@ let army = makeArmy();
 army[0](); // the shooter number 0 shows 10
 army[5](); // and number 5 also outputs 10...
 // ... all shooters show 10 instead of their 0, 1, 2, 3...
+
+
+// Is this variable visible?
+// - no, because it is only intialized, 
+// once it passes let declaration, it then
+// can be used.
+let x = 1;
+
+function func() {
+  console.log(x); // ?
+
+  let x = 2;
+}
+
+func();
