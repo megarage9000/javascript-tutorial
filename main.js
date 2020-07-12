@@ -1,80 +1,59 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Function Objects, NFE -> New Function()
+// Scheduling: setTimeout / setInterval
 /*
     Summary on website
-    [Function Objects, NFE]:
+    
+    1. Methods setTimeout(func, delay, ...args) and setInterval(func, delay, ...args) 
+    allow us to run the func once/regularly after delay milliseconds.
+    
+    2. To cancel the execution, we should call clearTimeout/clearInterval with 
+    the value returned by setTimeout/setInterval.
+    
+    3. Nested setTimeout calls are a more flexible alternative to setInterval, a
+    llowing us to set the time between executions more precisely.
+    
+    4. Zero delay scheduling with setTimeout(func, 0) (the same as setTimeout(func)) is
+    used to schedule the call “as soon as possible, but after the current script is complete”.
+    
+    5. The browser limits the minimal delay for five or more nested call of 
+    setTimeout or for setInterval (after 5th call) to 4ms. That’s for historical reasons.
 
-        Functions are objects.
+    Please note that all scheduling methods do not guarantee the exact delay.
 
-        Here we covered their properties:
+    For example, the in-browser timer may slow down for a lot of reasons:
 
-            1. name – the function name. Usually taken from the function definition, 
-            but if there’s none, JavaScript tries to guess it from the context (e.g. an assignment).
+        - The CPU is overloaded.
+        - The browser tab is in the background mode.
+        - The laptop is on battery.
 
-            2. length – the number of arguments in the function definition. Rest parameters are not counted.
-
-        If the function is declared as a Function Expression (not in the main code flow), and it carries the name, 
-        then it is called a Named Function Expression. The name can be used inside to reference itself, for recursive calls or such.
-        
-        Also, functions may carry additional properties. Many well-known JavaScript libraries make great use of this feature.
-        They create a “main” function and attach many other “helper” functions to it. For instance, the
-        jQuery library creates a function named $. The lodash library creates a function _, and then adds _.clone,
-        _.keyBy and other properties to it (see the docs when you want learn more about them). Actually, they do it to 
-        lessen their pollution of the global space, so that a single library gives only one global variable. That reduces 
-        the possibility of naming conflicts.
-
-        So, a function can do a useful job by itself and also carry a bunch of other functionality in properties.
-
-    [New Function]:
-
-        The syntax:
-
-            let func = new Function ([arg1, arg2, ...argN], functionBody);
-
-        For historical reasons, arguments can also be given as a comma-separated list.
-
-        These three declarations mean the same:
-
-        new Function('a', 'b', 'return a + b'); // basic syntax
-        new Function('a,b', 'return a + b'); // comma-separated
-        new Function('a , b', 'return a + b'); // comma-separated with spaces
-
-        Functions created with new Function, have [[Environment]] referencing the global 
-        Lexical Environment, not the outer one. Hence, they cannot use outer variables. 
-        But that’s actually good, because it insures us from errors. Passing parameters 
-        explicitly is a much better method architecturally and causes no problems with minifiers.
+    All that may increase the minimal timer resolution (the minimal delay) 
+    to 300ms or even 1000ms depending on the browser and OS-level performance settings.
 
 */
 
-// - Set and Decrease Counter 
-// Solution on website!
-function makeCounter() {
-    
-    let count = 0;
-
-    function counter(){
-        return count++;
-    }
-
-    counter.set = value => count = value;
-
-    counter.decrease = () => count--;
-
-    return counter;
-    // ... your code ...
+function printNumbersInterval(from, to){
+    currentIndex = from;
+    let intervalId = setInterval(function(){
+        console.log(currentIndex);
+        if(currentIndex < to) currentIndex++;
+        else clearInterval(intervalId);
+    }, 1000);
 }
-  
-let counter = makeCounter();
 
-alert( counter() ); // 0
-alert( counter() ); // 1
+function printNumbersTimeout(from, to){
+    currentIndex = from;
+    setTimeout(function printNumbers(){
+        console.log(currentIndex);
+        if(currentIndex < to) {
+            currentIndex++;
+            setTimeout(printNumbers, 1000)
+        }
+    }, 1000);
+}
 
-counter.set(10); // set the new count
-
-alert( counter() ); // 10
-
-counter.decrease(); // decrease the count by 1
-
-alert( counter() ); // 10 (instead of 11)
+// console.log("Interval: ");
+// printNumbersInterval(1, 3);
+console.log("Timeout: ");
+printNumbersTimeout(1, 3);
