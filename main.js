@@ -1,116 +1,42 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Variable Scopes
+// The old "var"
 /*
-    Lexical Environments!  
-        - Each of these store the following: 
-            1. Environment Record [All local variables are stored as properties, and also 'this']
-            2. Reference to its outer Lexical Environment, and 
-        
-        - A variable is essentially a 'property' of the Environment Record object
-            - The variable is uninitialized -> undefined when let declaration is seen 
-            -> then initialized
-            - When a variable is updated, it is updated in its lexical environment
-            - For garbage collection, when these variables aren't used, they may
-            not be available in the debugger!
+    Summary on website
+    
+    [The old "var"]: 
 
-        - Function Declarations are instantly initialized, unlike variables
-            - An inner lexical environment is created for local variables and 
-            arguments
-            - An outer lexical environment is referenced for outer variables
-            - On variable search, it searches the inner environment, then
-            to the outer environment
+    There are two main differences of var compared to let/const:
 
+        1. var variables have no block scope, they are visible minimum at the function level.
+    
+        2. var declarations are processed at function start (script start for globals).
+
+    There’s one more very minor difference related to the global object, that we’ll cover in the next chapter.
+
+    These differences make var worse than let most of the time. Block-level variables is such a great thing. 
+    That’s why let was introduced in the standard long ago, and is now a major way (along with const) to declare a variable.
+
+    [Global Object]:
+
+    The global object holds variables that should be available everywhere.
+
+    That includes JavaScript built-ins, such as Array and environment-specific values, 
+    such as window.innerHeight – the window height in the browser.
+
+    The global object has a universal name globalThis.
+    …But more often is referred by “old-school” environment-specific 
+    names, such as window (browser) and global (Node.js). As globalThis is a recent 
+    proposal, it’s not supported in non-Chromium Edge (but can be polyfilled).
+
+    We should store values in the global object only if they’re truly global for our project.
+    And keep their number at minimum.
+
+    In-browser, unless we’re using modules, global functions and variables declared with var 
+    become a property of the global object.
+
+    To make our code future-proof and easier to understand, we should access properties of the 
+    global object directly, as window.x.
 
 */
-
-// - Apprently you can do this?
-function sum(num1){
-    return function(num2){
-        return num1 + num2;
-    }
-}
-
-// alert(sum(1)(2));
-
-// - Filter through function
-/*
-    inBetween and inArray return Lexical environments
-    to their respective inner functions, allowing usage
-    for the fn() in filter for (item, index ...)
-*/
-function inBetween(min, max){
-    return function(item){
-        return item >= min && item <= max;
-    }
-}
-
-function inArray(arr){
-    return function(item){
-        return arr.includes(item);
-    }
-}
-
-let arr = [1, 2, 3, 4, 5, 6, 7];
-
-// alert( arr.filter(inBetween(3, 6)) ); // 3,4,5,6
-
-// alert( arr.filter(inArray([1, 2, 10])) ); // 1,2
-
-// - Sort by field
-function byField(fieldName){
-    return function(userA, userB){
-        return userA[fieldName] > userB[fieldName] ? 1 : -1;
-    }
-}
-
-let users = [
-    { name: "John", age: 20, surname: "Johnson" },
-    { name: "Pete", age: 18, surname: "Peterson" },
-    { name: "Ann", age: 19, surname: "Hathaway" }
-];
-
-let sortedByName = [...users.sort(byField('name'))];
-let sortedByAge = [...users.sort(byField('age'))];
-
-// - Army of Functions
-function makeArmy() {
-    let shooters = [];
-
-    let i = 0;
-    while (i < 10) {
-        // add a different variable to reference, which is created
-        // every new iteration of loop as a new lexical environment
-        // is created
-        let j = i;
-        let shooter = function() { // shooter function
-            alert( j ); // should show its number
-        };
-        shooters.push(shooter);
-        i++;
-    }
-
-    return shooters;
-}
-  
-let army = makeArmy();
-
-army[0](); // the shooter number 0 shows 10
-army[5](); // and number 5 also outputs 10...
-// ... all shooters show 10 instead of their 0, 1, 2, 3...
-
-
-// Is this variable visible?
-// - no, because it is only intialized, 
-// once it passes let declaration, it then
-// can be used.
-let x = 1;
-
-function func() {
-  console.log(x); // ?
-
-  let x = 2;
-}
-
-func();
