@@ -4,41 +4,46 @@
 
 "use strict"
 
-// WeakMap & WeakSet
+// Object, keys, values
 
 /*
-    Summary from website:
+    For plain objects, the following methods are available:
 
-    - WeakMap is Map-like collection that allows only objects as keys and 
-    removes them together with associated value once they become 
-    inaccessible by other means.
+    Object.keys(obj) – returns an array of keys.
+    Object.values(obj) – returns an array of values.
+    Object.entries(obj) – returns an array of [key, value] pairs.
 
-    - WeakSet is Set-like collection that stores only objects and removes 
-    them once they become inaccessible by other means.
-
-    - Both of them do not support methods and properties that refer to 
-    all keys or their count. Only individual operations are allowed.
-
-    - WeakMap and WeakSet are used as “secondary” data structures in 
-    addition to the “main” object storage. Once the object is removed 
-    from the main storage, if it is only found as the key of WeakMap or 
-    in a WeakSet, it will be cleaned up automatically.
+    - Also, Object has Object.fromEntries(array), to convert Object.entries -> Object again
 */
 
-// - Store unread messages:
-let messages = [
-    {text: "Hello", from: "John"},
-    {text: "How goes?", from: "John"},
-    {text: "See you soon", from: "Alice"}
-];
+// - Sum the properties:
 
-let readMessages = new WeakSet();
-function readMessage(message){
-    readMessages.add(message);
+function sumSalaries(salaries){
+
+    return Object.values(salaries).reduce(
+       (sum, current) => sum += current,
+       0 
+    ); 
+
 }
 
-// - Store date of read messages: 
-let dateOfReadMessages = new WeakMap();
-function getDateOfReadMessage(message){
-    dateOfReadMessages.set(message, "2020 baby");
+let salaries = {
+    "John": 100,
+    "Pete": 300,
+    "Mary": 250
+  };
+  
+// alert( sumSalaries(salaries) );
+
+// - Count the properties:
+function count(user){
+// solution from website
+    return Object.keys(user).length;
 }
+
+let user = {
+    name: 'John',
+    age: 30
+  };
+  
+// alert( count(user) ); // 2
