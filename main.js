@@ -4,46 +4,68 @@
 
 "use strict"
 
-// Object, keys, values
+// Destructuring
 
 /*
-    For plain objects, the following methods are available:
+    
+Summary: 
 
-    Object.keys(obj) – returns an array of keys.
-    Object.values(obj) – returns an array of values.
-    Object.entries(obj) – returns an array of [key, value] pairs.
+    Destructuring assignment allows for instantly 
+    mapping an object or array onto many variables.
 
-    - Also, Object has Object.fromEntries(array), to convert Object.entries -> Object again
+    The full object syntax:
+        - let {prop : varName = default, ...rest} = object
+
+    This means that property prop should go into the variable varName and, if no 
+    such property exists, then the default value should be used.
+    Object properties that have no mapping are copied to the rest object.
+
+    The full array syntax:
+        - let [item1 = default, item2, ...rest] = array
+
+    The first item goes to item1; the second goes into item2, all the rest makes the array rest.
+    It’s possible to extract data from nested arrays/objects, for that the 
+    left side must have the same structure as the right one.
+
 */
 
-// - Sum the properties:
 
-function sumSalaries(salaries){
+// - Destructuring assignment
+let user = { name: "John", years: 30 };
+// your code to the left side:
+// ... = user
+// puts all proper values to corresponding variables
+let {name, years : age, isAdmin = false} = user;
+// technically name -> name : name
+// isAdmin is non existent in user so we need the false default value
+// alert( name ); // John
+// alert( age ); // 30
+// alert( isAdmin ); // false
 
-    return Object.values(salaries).reduce(
-       (sum, current) => sum += current,
-       0 
-    ); 
-
-}
-
+// - The Maximal Assignment
 let salaries = {
     "John": 100,
     "Pete": 300,
     "Mary": 250
-  };
-  
-// alert( sumSalaries(salaries) );
+};
 
-// - Count the properties:
-function count(user){
-// solution from website
-    return Object.keys(user).length;
+function topSalaries(salaries){
+
+    let maxName = null;
+    let maxSalary = 0;
+
+    for(const [name, salary] of Object.entries(salaries)){
+        if(salary > maxSalary){
+            maxSalary = salary;
+            maxName = name;
+        }
+    }
+
+    return {
+        maxName,
+        maxSalary
+    };
+
 }
 
-let user = {
-    name: 'John',
-    age: 30
-  };
-  
-// alert( count(user) ); // 2
+console.log(topSalaries(salaries));
