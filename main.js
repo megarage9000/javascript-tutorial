@@ -4,62 +4,77 @@
 
 "use strict"
 
-// Methods of primitives
+// Arrays
 
 /*
     Summary from website: 
 
-    - There are 3 types of quotes. Backticks allow a string to span multiple lines and embed expressions ${…}.
-    
-    - Strings in JavaScript are encoded using UTF-16.
-    
-    - We can use special characters like \n and insert letters by their unicode using \u....
-    
-    - To get a character, use: [].
-    
-    - To get a substring, use: slice or substring.
-    
-    - To lowercase/uppercase a string, use: toLowerCase/toUpperCase.
-    
-    - To look for a substring, use: indexOf, or includes/startsWith/endsWith for simple checks.
-    
-    - To compare strings according to the language, use: localeCompare, otherwise they are compared by character codes.
+    Array is a special kind of object, suited to storing and managing ordered data items.
 
-    There are several other helpful methods in strings:
+    The declaration:
 
-        str.trim() – removes (“trims”) spaces from the beginning and end of the string.
-        str.repeat(n) – repeats the string n times.
-        …and more to be found in the manual.
+    // square brackets (usual)
+    let arr = [item1, item2...];
 
-    Strings also have methods for doing search/replace with regular expressions. But that’s big topic, 
-    so it’s explained in a separate tutorial section Regular expressions.
+    // new Array (exceptionally rare)
+    let arr = new Array(item1, item2...);
 
-    - IN SUMMARY... view the manual.
+    The call to new Array(number) creates an array with the given length, but without elements.
+
+    The length property is the array length or, to be precise, its last numeric index plus one. It is auto-adjusted by array methods.
+
+    If we shorten length manually, the array is truncated.
+
+    We can use an array as a deque with the following operations:
+
+        push(...items) adds items to the end.
+        pop() removes the element from the end and returns it.
+        shift() removes the element from the beginning and returns it.
+        unshift(...items) adds items to the beginning.
+
+    To loop over the elements of the array:
+
+        for (let i=0; i<arr.length; i++) – works fastest, old-browser-compatible.
+        for (let item of arr) – the modern syntax for items only,
+        for (let i in arr) – never use.
+
+    - Arrays only have toString() converting method
+
+    - Arrays can be multidimensional
+
+    We will return to arrays and study more methods to add, remove, extract elements and sort arrays in the chapter 
+
+    - DON'T TREAT ARRAYS AS OBJECTS, use the common queue and stack operations.
 */
 
-// - Uppercase First Letter
-// function ucFirst(word){
-//     if(!word) return word;
-//     let result = 
-//         word[0].toUpperCase()
-//          + word.slice(0, word.length - 1);
-//     return result;
-// }
+// Array insertion challenge
+// - Literally copy pasta since I didn't
+// read the question correctly
+// let styles = ["Jazz", "Blues"];
+// styles.push("Rock-n-Roll");
+// styles[Math.floor((styles.length - 1) / 2)] = "Classics";
+// alert( styles.shift() );
+// styles.unshift("Rap", "Reggae");
 
-// let word = prompt("Enter a word");
-// alert(ucFirst(word));
+// Maximal Array
+//-again copied solution because I didn't read properly
+function getMaxSubSum(array){
+    let max = 0;
+    let partial = 0;
 
-// - Check for Spam
-// - use the newer .includes()
-// function checkSpam(sourceString){
+    for(let element of array){
+        partial += element;
+        if(partial > max){
+            max = partial;
+        }
+        if(partial < 0) partial = 0;
+    }
+    return max;
+}
 
-//     let newSource = sourceString.toLowerCase();
-//     let isSpam = newSource.includes('xxx') || newSource.includes('viagra');
-
-//     return isSpam;
-// }
-
-// alert(checkSpam('buy ViAgRA now') == true);
-// alert(checkSpam('free xxxxx') == true);
-// alert(checkSpam('Cool guys don\'t have sex') == false);
-
+alert( getMaxSubSum([-1, 2, 3, -9]) ); // 5
+alert( getMaxSubSum([-1, 2, 3, -9, 11]) ); // 11
+alert( getMaxSubSum([-2, -1, 1, 2]) ); // 3
+alert( getMaxSubSum([100, -9, 2, -3, 5]) ); // 100
+alert( getMaxSubSum([1, 2, 3]) ); // 6
+alert( getMaxSubSum([-1, -2, -3]) ); // 0
