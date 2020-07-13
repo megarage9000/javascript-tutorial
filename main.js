@@ -1,52 +1,75 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// Native Prototypes
+// Prototype methods, objects without _proto_
 
 /*
 
     Summary on website:
     
-    
-    All built-in objects follow the same pattern:
-        - The methods are stored in the prototype (Array.prototype, Object.prototype, Date.prototype, etc.)
-        - The object itself stores only the data (array items, object properties, the date)
+        Modern methods to set up and directly access the prototype are:
 
-    Primitives also store methods in prototypes of wrapper objects: Number.prototype, 
-    String.prototype and Boolean.prototype. Only undefined and null do not have wrapper objects
+            1. Object.create(proto[, descriptors]) – creates an empty object with a given proto as [[Prototype]] 
+            (can be null) and optional property descriptors.
+            
+            2. Object.getPrototypeOf(obj) – returns the [[Prototype]] of obj (same as __proto__ getter).
+            
+            3. Object.setPrototypeOf(obj, proto) – sets the [[Prototype]] of obj to proto (same as __proto__ setter).
 
-    Built-in prototypes can be modified or populated with new methods. But it’s not recommended to 
-    change them. The only allowable case is probably when we add-in a new standard, but it’s not yet 
-    supported by the JavaScript engine
+        The built-in __proto__ getter/setter is unsafe if we’d want to put user-generated 
+        keys into an object. Just because a user may enter "__proto__" as the key, and 
+        there’ll be an error, with hopefully light, but generally unpredictable consequences.
 
- */
+        So we can either use Object.create(null) to create a “very plain” object without 
+        __proto__, or stick to Map objects for that.
 
-// Add method "f.defer(ms)" to Functions
+        Also, Object.create provides an easy way to shallow-copy an object with all descriptors:
 
-// function f() {
-//     alert("Hello!");
-// }
+        let clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
 
-// // using function() to allow 'this' usage
-// Function.prototype.defer = function(ms){
-//     setTimeout(this, ms)
-// }
-  
-// f.defer(1000); // shows "Hello!" after 1 second
+        We also made it clear that __proto__ is a getter/setter for [[Prototype]] and resides in 
+        Object.prototype, just like other methods.
 
-// Add a decorating function to Functions
+        We can create an object without a prototype by Object.create(null). Such objects are used as 
+        “pure dictionaries”, they have no issues with "__proto__" as the key.
 
-function f(a, b) {
-    alert( a + b );
+        Other methods:
+
+            - Object.keys(obj) / Object.values(obj) / Object.entries(obj) – returns an array of 
+            enumerable own string property names/values/key-value pairs.
+            
+            - Object.getOwnPropertySymbols(obj) – returns an array of all own symbolic keys.
+            
+            - Object.getOwnPropertyNames(obj) – returns an array of all own string keys.
+            
+            - Reflect.ownKeys(obj) – returns an array of all own keys.
+            
+            - obj.hasOwnProperty(key): returns true if obj has its own (not inherited) key named key.
+
+        All methods that return object properties (like Object.keys and others) – return “own” properties. If we want inherited ones, we can use for..in.
+*/
+
+// The difference between calls
+
+function Rabbit(name) {
+    this.name = name;
+}
+Rabbit.prototype.sayHi = function() {
+    alert( this.name );
 }
 
-// Website solution
-Function.prototype.defer = function(ms){
-    let f = this;
-    return function(...args) {
-        // using f.apply for object methods as well
-        setTimeout(() => f.apply(this, args), ms);
-    };
+let rabbit = new Rabbit("Rabbit");
 
-};
-f.defer(1000)(1, 2); // shows 3 after 1 second
+rabbit.sayHi();                        // Rabbit
+Rabbit.prototype.sayHi();              // undefined
+Object.getPrototypeOf(rabbit).sayHi(); // undefined
+rabbit.__proto__.sayHi();              // undefined
+
+/**
+ *  The reason why this occurs for the last 3 calls
+ *  is that "this" is referencing to the object before
+ *  the dot, which in this case doesn't include
+ *  the rabbit object [For the last 3 calls]. sayHi()
+ *  relies on this.name, which only exists in the
+ *  rabbit object / new Rabbit creation
+ */
