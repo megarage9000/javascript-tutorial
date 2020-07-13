@@ -1,46 +1,52 @@
 // This is important
 /* Manual and Specifications: https://javascript.info/manuals-specifications*/
 
-// F.Prototype
+// Native Prototypes
 
 /*
 
     Summary on website:
     
-    In this chapter we briefly described the way of setting a [[Prototype]] for 
-    objects created via a constructor function. Later we’ll see more advanced 
-    programming patterns that rely on it.
+    
+    All built-in objects follow the same pattern:
+        - The methods are stored in the prototype (Array.prototype, Object.prototype, Date.prototype, etc.)
+        - The object itself stores only the data (array items, object properties, the date)
 
-    Everything is quite simple, just a few notes to make things clear:
+    Primitives also store methods in prototypes of wrapper objects: Number.prototype, 
+    String.prototype and Boolean.prototype. Only undefined and null do not have wrapper objects
 
-        - The F.prototype property (don’t mistake it for [[Prototype]]) sets 
-        [[Prototype]] of new objects when new F() is called.
-        
-        - The value of F.prototype should be either an object or null: other 
-        values won’t work.
+    Built-in prototypes can be modified or populated with new methods. But it’s not recommended to 
+    change them. The only allowable case is probably when we add-in a new standard, but it’s not yet 
+    supported by the JavaScript engine
 
-        - The "prototype" property only has such a special effect when set on a
-        constructor function, and invoked with new.
+ */
 
-    On regular objects the prototype is nothing special:
+// Add method "f.defer(ms)" to Functions
 
-*/
+// function f() {
+//     alert("Hello!");
+// }
 
-// See tasks on website for better understanding!
+// // using function() to allow 'this' usage
+// Function.prototype.defer = function(ms){
+//     setTimeout(this, ms)
+// }
+  
+// f.defer(1000); // shows "Hello!" after 1 second
 
-// example
-function User(name) {
-    this.name = name;
-  }
-User.prototype = {}; // (*)
+// Add a decorating function to Functions
 
-let user = new User('John');
-let user2 = new user.constructor('Pete');
+function f(a, b) {
+    alert( a + b );
+}
 
-alert( user2.name ); // undefined
-/*
-  user2.name does the following:
-  - checks user.constructor, nothing there
-  - checks the prototype chain, only finding
-  empty javscript object in prototype :(
-*/
+// Website solution
+Function.prototype.defer = function(ms){
+    let f = this;
+    return function(...args) {
+        // using f.apply for object methods as well
+        setTimeout(() => f.apply(this, args), ms);
+    };
+
+};
+f.defer(1000)(1, 2); // shows 3 after 1 second
